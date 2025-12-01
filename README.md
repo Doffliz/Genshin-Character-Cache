@@ -1,51 +1,58 @@
-<<<<<<< HEAD
-# 🌟 Genshin Character Catalog: Core Business Logic Layer (Practical 14)
+# Genshin Character Cache Core
 
-This repository contains the implementation of the **Core Business Logic Layer (CORE)** for the Genshin Impact character catalog as part of Practical Assignment No. 14
+This repository contains the Core Business Logic Layer for the Genshin Character Application project, developed as part of Practical Assignment 15: Data Persistence (Caching).
 
----
+## 🎯 Project Goal
 
-## 🎯 Project Goal and Architecture
+The primary goal of this layer is to ensure efficient handling of Genshin Impact character data by minimizing network load and improving user experience through the implementation of an **Image Caching** mechanism.
 
-The main objective is to demonstrate a **three-tier architecture** and the strict separation of concerns:
+## ✨ Implemented Functionality (Practical Assignment 15)
 
-1.  **CORE (Business Logic):** Encapsulates all data processing and business rules (the focus of this assignment).
-2.  **DATA (Persistence):** Abstracted from CORE using the `ICharacterRepository` interface.
-3.  **PRESENTATION (CLI):** Responsible solely for calling the CORE service and displaying the final result.
+The project implements the following key persistence and caching features:
 
-### Key Architectural Principle
-The **Dependency Inversion Principle (DIP)** is applied: The `CharacterService` depends on the abstraction (`ICharacterRepository`), ensuring it is loosely coupled and independent of the actual data source (`MockCharacterRepository`).
+* **Image Caching:** A mechanism has been introduced to store character portraits (image raw data) directly in the user's local file system.
+* **Cache Location:** The cache is stored in a dedicated directory located within the special system folder for application data (Environment.SpecialFolder.LocalApplicationData), typically mapped to `C:\Users\AppData\Local\GenshinCharacterCache`.
+* **Persistence Logic (Cache Hit/Miss):**
+    * **Cache Miss:** On the first request, the image is downloaded from the network (URL) and saved to the local disk.
+    * **Cache Hit:** On subsequent requests, the image is loaded immediately from the local cache, avoiding a network request and reducing load time.
+* **Architecture:** The core caching logic is implemented in the **`ImageCacheManager`** class and integrated into the **`CharacterService.cs`**.
 
----
+## 💻 How to Run the Project
 
-## 🛡 Implemented Business Rules (CharacterService)
+The project is developed on **.NET Core** and is designed to be executed via the console.
 
-The `CharacterService` class performs the following rules on the raw data (`CharacterDto`) to produce the clean Domain Model (`Character`):
+### Requirements
 
-1.  **Rarity Filtering:** Characters with a rarity of less than 4 stars are ignored (e.g., the mock character 'Sayu' is filtered out).
-2.  **Text Processing (Truncation):** The `Description` field is trimmed to 50 characters if it is too long, and "..." is appended.
-3.  **Mapping and Naming:** Fields like `Vision` and `Weapon` are mapped to the cleaner domain names: `Element` and `WeaponType`.
-4.  **URL Generation:** A complete, valid image URL (`ImageUrl`) is constructed for display.
+* **NET Core SDK** (version 6.0 or newer) installed.
 
----
+### Execution Steps
 
-## 🚀 How to Run the Project
-
-The project requires the **.NET 8 SDK** (or newer) to run.
-
-1.  **Clone the Repository:**
+1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/Doffliz/Genshin-Core-Layer.git](https://github.com/Dofflix/Genshin-Core-Layer.git)
-    cd Genshin-Core-Layer
+    git clone [https://github.com/Doffliz/Genshin-Character-Cache-Core.git](https://github.com/Doffliz/Genshin-Character-Cache-Core.git)
     ```
-2.  **Execute the Application:**
-    Run the following command from the project root directory (`/Core`):
+2.  **Navigate to the project directory:**
+    ```bash
+    cd Genshin-Character-Cache-Core
+    ```
+3.  **Run the application:**
     ```bash
     dotnet run
     ```
-### Expected Output
-The program will display the processed data (4 characters) and confirm the successful filtering and description truncation.
-=======
-# Genshin-Character-Cache
-"Implementation of the Persistence Layer and Caching (Buffering) mechanism for Genshin Impact character data. The project demonstrates downloading and saving character portraits to a local cache (AppData/Local) to reduce external network requests
->>>>>>> bd43cb9bb1391637d82b44e90780e82901404f66
+
+### Expected Test Result
+
+Running `dotnet run` should output a test sequence demonstrating the cache mechanism's functionality:
+
+| Test | Operation | Expected Status |
+| :--- | :--- | :--- |
+| **Test 1** (Cache Miss) | First Image Request | Image downloaded from the URL and saved locally. |
+| **Test 2** (Cache Hit) | Second Image Request | Image loaded **from the local cache** immediately. |
+
+> 
+
+---
+
+## 📄 Project Documentation
+
+A detailed description of the architecture, caching strategy, flow of operation, and cache calculation formulas is provided in the accompanying **Design Document** (Task 15 - Design Document).
