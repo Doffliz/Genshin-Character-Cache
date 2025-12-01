@@ -29,11 +29,11 @@ The project is developed on **.NET Core** and is designed to be executed via the
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/Doffliz/Genshin-Character-Cache-Core.git](https://github.com/Doffliz/Genshin-Character-Cache-Core.git)
+    git clone https://github.com/Doffliz/Genshin-Character-Cache.git
     ```
 2.  **Navigate to the project directory:**
     ```bash
-    cd Genshin-Character-Cache-Core
+    cd Genshin-Character-Cache
     ```
 3.  **Run the application:**
     ```bash
