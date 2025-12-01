@@ -1,4 +1,4 @@
-# Genshin Character Cache Core
+# Genshin Character Cache 
 
 This repository contains the Core Business Logic Layer for the Genshin Character Application project, developed as part of Practical Assignment 15: Data Persistence (Caching).
 
