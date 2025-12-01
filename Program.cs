@@ -1,43 +1,54 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Core.Services;
-using Core.Mocks; 
-using System.Collections.Generic;
+using Genshin_Core_Layer.Services;
+using Genshin_Core_Layer.Models;
+using Genshin_Core_Layer.Mocks; 
 
 class Program
 {
     static async Task Main(string[] args)
     {
-        Console.WriteLine("--- Практичне Заняття 14: Розширена Core Логіка ---");
-
-        var mockRepo = new MockCharacterRepository();
-        var service = new CharacterService(mockRepo);
-
-        Console.WriteLine("Старт завантаження та обробки даних...");
+        Console.WriteLine("--- Практичне Заняття 15: Постійність Інформації (Кешування) ---");
         
-        List<Core.Models.Character> characters;
-        try
+        var service = new CharacterService();
+        string testCharacterId = "Aether";
+
+        
+        var character = await service.GetCharacterDataAsync(testCharacterId);
+        string portraitUrl = character.PortraitUrl ?? "http://missing.com/default.jpg";
+
+        Console.WriteLine($"\n--- Тест 1: Перше завантаження (Cache Miss) ---");
+        
+        byte[]? firstLoadData = await service.GetCharacterPortraitAsync(character.Id!, portraitUrl);
+        
+        if (firstLoadData != null)
         {
-            characters = await service.LoadCharactersAsync();
+            Console.WriteLine($"[RESULT] Image data size: {firstLoadData.Length} bytes.");
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine($"Помилка під час завантаження: {ex.Message}");
-            return;
+            Console.WriteLine("[RESULT] Failed to get image data (network error).");
         }
 
-        Console.WriteLine("\n--- Оброблений результат (Трансформація та Фільтрація успішна) ---");
 
-        foreach (var c in characters)
+        Console.WriteLine($"\n--- Тест 2: Друге завантаження (Cache Hit) ---");
+        
+        byte[]? secondLoadData = await service.GetCharacterPortraitAsync(character.Id!, portraitUrl);
+
+        if (secondLoadData != null)
         {
+            Console.WriteLine($"[RESULT] Image data size: {secondLoadData.Length} bytes.");
             
-            Console.WriteLine($"\n> {c.ToString()}"); 
-            Console.WriteLine($"  Опис: {c.ShortDescription}");
-            Console.WriteLine($"  URL: {c.ImageUrl}");
+            if (firstLoadData != null && firstLoadData.Length == secondLoadData.Length)
+            {
+                 Console.WriteLine("[VERIFICATION] Розмір даних з кешу збігається з даними з мережі.");
+            }
         }
-        
-        
-        Console.WriteLine($"\nКількість оброблених персонажів: {characters.Count} (Sayu 3* відфільтровано)"); 
+        else
+        {
+            Console.WriteLine("[RESULT] Failed to get image data.");
+        }
+
         Console.WriteLine("\n--- Завершено ---");
     }
 }
