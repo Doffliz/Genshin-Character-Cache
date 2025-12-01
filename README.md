@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌟 Genshin Character Catalog: Core Business Logic Layer (Practical 14)
 
 This repository contains the implementation of the **Core Business Logic Layer (CORE)** for the Genshin Impact character catalog as part of Practical Assignment No. 14
@@ -44,3 +45,7 @@ The project requires the **.NET 8 SDK** (or newer) to run.
     ```
 ### Expected Output
 The program will display the processed data (4 characters) and confirm the successful filtering and description truncation.
+=======
+# Genshin-Character-Cache
+"Implementation of the Persistence Layer and Caching (Buffering) mechanism for Genshin Impact character data. The project demonstrates downloading and saving character portraits to a local cache (AppData/Local) to reduce external network requests
+>>>>>>> bd43cb9bb1391637d82b44e90780e82901404f66
